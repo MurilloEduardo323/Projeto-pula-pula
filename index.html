@@ -54,7 +54,7 @@
         <label>1. Escolha a Data da Festa:</label>
         <input type="date" id="data-festa" onchange="verificarDisponibilidade()">
 
-     <div class="vitrine">
+        <div class="vitrine">
     <div class="card-brinquedo" id="card-pula">
         <img src="38bf36f0-3db6-476d-850b-c9a0bb6a243d.jpeg">
         <div class="card-info">
@@ -179,32 +179,44 @@
 
     function salvarEEnviar() {
         const data = document.getElementById('data-festa').value;
-        const endereco = document.getElementById('endereco').value;
-        const bairro = document.getElementById('bairro').value;
-        const selecionados = document.querySelectorAll('.brinquedo:checked');
+    const endereco = document.getElementById('endereco').value;
+    const bairro = document.getElementById('bairro').value;
+    const selecionados = document.querySelectorAll('.brinquedo:checked');
 
-        if(!data || selecionados.length === 0 || !endereco) return alert("Preencha data, brinquedo e endereço!");
+    if(!data || selecionados.length === 0 || !endereco) return alert("Preencha tudo!");
 
-        let itensTxt = "";
-        selecionados.forEach(b => {
-            itensTxt += "- " + b.value + "%0A";
-            // Salva no Banco de Dados
-            database.ref('reservas').push({
-                cliente: nomeCliente,
-                telefone: telCliente,
-                data: data,
-                brinquedo: b.value,
-                endereco: endereco + " (" + bairro + ")",
-                pago: false // Inicia como pendente
-            });
+    let itensTxt = "";
+    selecionados.forEach(b => {
+        itensTxt += "- " + b.value + "%0A";
+        
+        // SALVANDO NO FIREBASE
+        database.ref('reservas').push({
+            cliente: nomeCliente,
+            telefone: telCliente,
+            data: data, // Dia da festa
+            dataPedido: new Date().toLocaleString('pt-BR'), // <--- ESTA LINHA É ESSENCIAL
+            brinquedo: b.value,
+            endereco: endereco + " (" + bairro + ")",
+            pago: false
         });
+    });
 
         const total = document.getElementById('res-total').innerText;
         const msg = `*NOVA RESERVA*%0A%0A👤 *Cliente:* ${nomeCliente}%0A📞 *Tel:* ${telCliente}%0A📅 *Data:* ${data}%0A🏠 *End:* ${endereco}%0A%0A🎡 *Itens:*%0A${itensTxt}%0A💰 *TOTAL:* ${total}`;
 
         window.open(`https://wa.me/5563984516310?text=${msg}`); // Altere para seu número
+
+        database.ref('reservas').push({
+    cliente: nomeCliente,
+    telefone: telCliente,
+    data: data, // Data da festa
+    dataPedido: new Date().toLocaleString('pt-BR'), // Data e hora do momento da reserva
+    brinquedo: b.value,
+    endereco: endereco + " (" + bairro + ")",
+    pago: false
+        });
     }
+
 </script>
 </body>
-
 </html>

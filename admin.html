@@ -27,19 +27,19 @@
 
     <div id="painel" class="hidden">
         <h2>Gerenciar Locações</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Cliente / Tel</th>
-                    <th>Brinquedo</th>
-                    <th>Endereço</th>
-                    <th>Pagamento</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="lista"></tbody>
-        </table>
+      <table>
+    <thead>
+        <tr>
+            <th>Feito em:</th> <th>Dia da Festa</th>
+            <th>Cliente / Tel</th>
+            <th>Brinquedo</th>
+            <th>Endereço</th>
+            <th>Pagamento</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody id="lista"></tbody>
+</table>
     </div>
 </div>
 
@@ -65,29 +65,41 @@
     }
 
     function carregar() {
-        database.ref('reservas').on('value', snap => {
-            const lista = document.getElementById('lista');
-            lista.innerHTML = "";
-            snap.forEach(item => {
-                const res = item.val();
-                const id = item.key;
-                const dataLimpa = res.data.replace(/-/g, "");
-                const linkGoogle = `https://www.google.com/calendar/render?action=TEMPLATE&text=LOCAÇÃO:+${res.brinquedo}&dates=${dataLimpa}/${dataLimpa}&details=Cliente:+${res.cliente}+-+Tel:+${res.telefone}`;
+       database.ref('reservas').on('value', snap => {
+        const lista = document.getElementById('lista');
+        lista.innerHTML = "";
+        snap.forEach(item => {
+            const res = item.val();
+            const id = item.key;
+            
+            // Se a dataPedido não existir (pedidos antigos), ele mostra "Antigo"
+            const dataDoPedido = res.dataPedido ? res.dataPedido : "Pedido Antigo";
 
-                lista.innerHTML += `
-                    <tr>
-                        <td>${res.data}</td>
-                        <td>${res.cliente}<br><small>${res.telefone}</small></td>
-                        <td>${res.brinquedo}</td>
-                        <td><small>${res.endereco || 'Não informado'}</small></td>
-                        <td><button class="${res.pago ? 'pago' : 'pendente'}" onclick="mudarStatus('${id}', ${res.pago})">${res.pago ? 'PAGO' : 'PENDENTE'}</button></td>
-                        <td>
-                            <a href="${linkGoogle}" target="_blank" class="btn-agenda">📅 Agenda</a>
-                            <button onclick="excluir('${id}')" style="background:red; color:white; border:none; cursor:pointer;">X</button>
-                        </td>
-                    </tr>`;
-            });
+            lista.innerHTML += `
+                <tr>
+                    <td style="font-size: 11px; color: #7f8c8d;">${dataDoPedido}</td> 
+                    <td><b>${formatarData(res.data)}</b></td>
+                    <td>${res.cliente}<br><small>${res.telefone}</small></td>
+                    <td>${res.brinquedo}</td>
+                    <td><small>${res.endereco || '---'}</small></td>
+                    <td>
+                        <button class="${res.pago ? 'pago' : 'pendente'}" onclick="mudarStatus('${id}', ${res.pago})">
+                            ${res.pago ? 'PAGO' : 'PENDENTE'}
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="excluir('${id}')" style="background:red; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer">X</button>
+                    </td>
+                </tr>`;
         });
+    });
+    }
+
+    // Função auxiliar para deixar a data da festa bonita (Brasil)
+    function formatarData(data) {
+        if(!data) return "---";
+        const partes = data.split("-");
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }
 
     function mudarStatus(id, atual) { database.ref('reservas/'+id).update({ pago: !atual }); }
