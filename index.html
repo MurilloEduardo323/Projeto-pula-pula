@@ -180,44 +180,41 @@
         document.getElementById('res-total').innerText = `R$ ${(sub + frete).toFixed(2)}`;
     }
 
-    function salvarEEnviar() {
+  function salvarEEnviar() {
     const data = document.getElementById('data-festa').value;
     const endereco = document.getElementById('endereco').value;
     const bairro = document.getElementById('bairro').value;
     const selecionados = document.querySelectorAll('.brinquedo:checked');
     const totalTexto = document.getElementById('res-total').innerText;
 
-    // Validação básica
-    if (!data || selecionados.length === 0 || !endereco || !bairro) {
-        return alert("Por favor, preencha a data, escolha um brinquedo e informe o endereço completo!");
+    if (!data || selecionados.length === 0 || !endereco || bairro === "") {
+        return alert("Preencha a data, o endereço e selecione ao menos um brinquedo!");
     }
 
-    // Convertendo o valor total para número para o banco de dados
+    // Pega o valor total e converte para número
     const totalNumerico = parseFloat(totalTexto.replace('R$ ', ''));
 
     let itensTxt = "";
     
-    // Loop para salvar cada brinquedo e montar a mensagem
+    // Salva cada brinquedo no banco de dados
     selecionados.forEach(b => {
         itensTxt += "- " + b.value + "%0A";
         
-        // SALVANDO NO FIREBASE
         database.ref('reservas').push({
             cliente: nomeCliente,
             telefone: telCliente,
-            data: data, // Dia da festa (importante para o filtro de meses)
-            dataPedido: new Date().toLocaleString('pt-BR'), // Data do registro
+            data: data,
+            dataPedido: new Date().toLocaleString('pt-BR'),
             brinquedo: b.value,
-            valorTotal: totalNumerico / selecionados.length, // Divide o valor se houver mais de um item, ou salve o total no primeiro
+            valorTotal: totalNumerico / selecionados.length, // Divide o valor total entre os itens
             endereco: endereco + " (" + bairro + ")",
             pago: false
         });
     });
 
-    // Montando a mensagem para o WhatsApp
     const msg = `*NOVA RESERVA*%0A%0A👤 *Cliente:* ${nomeCliente}%0A📞 *Tel:* ${telCliente}%0A📅 *Data:* ${data}%0A🏠 *End:* ${endereco} (${bairro})%0A%0A🎡 *Itens:*%0A${itensTxt}%0A💰 *TOTAL:* ${totalTexto}`;
 
-    // Abrindo o WhatsApp
+    // Abre o WhatsApp para enviar a mensagem
     window.open(`https://wa.me/5563984516310?text=${msg}`);
 }
 
