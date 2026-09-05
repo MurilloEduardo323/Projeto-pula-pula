@@ -1,0 +1,18 @@
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; margin: 0; padding: 15px; }
+.container { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.hidden { display: none; }
+h2 { text-align: center; color: #e67e22; }
+.vitrine { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; }
+.card-brinquedo { flex: 1 1 280px; max-width: 400px; border: 2px solid #eee; border-radius: 15px; overflow: hidden; background: #fff; }
+.card-brinquedo.indisponivel { opacity: 0.5; background: #fdeaea; border-color: #fab1a0; pointer-events: none; }
+.card-brinquedo img { width: 100%; height: 250px; object-fit: cover; background: #f9f9f9; }
+.card-info { padding: 15px; }
+.status-msg { color: #d63031; font-weight: bold; font-size: 0.85em; }
+label { font-weight: bold; display: block; margin: 15px 0 5px; }
+input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; font-size: 16px; box-sizing: border-box; }
+.resumo-caixa { background: #fff9e6; border: 2px solid #f1c40f; border-radius: 15px; padding: 20px; margin-top: 25px; }
+.linha-resumo { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.total-geral { border-top: 2px solid #f1c40f; padding-top: 10px; font-weight: bold; font-size: 1.4em; color: #d35400; }
+button { width: 100%; padding: 20px; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; }
+.btn-prox { background: #3498db; color: white; }
+.btn-whats { background: #25D366; color: white; margin-top: 20px; }

@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/31870111/README.md)
 # 🎈 Projeto Pula-Pula — Sistema de Reservas
 
 Sistema web para clientes reservarem brinquedos infláveis (pula-pula, piscina de bolinhas, etc.) para festas, com cálculo automático de valores, verificação de disponibilidade por data e envio do pedido direto para o WhatsApp.
@@ -21,7 +20,9 @@ Sistema web para clientes reservarem brinquedos infláveis (pula-pula, piscina d
 
 ```
 Projeto-pula-pula-main/
-├── index.html          # aplicação completa (HTML + CSS + JS)
+├── index.html          # estrutura HTML da aplicação
+├── style.css           # estilos
+├── script.js           # lógica (Firebase, disponibilidade, cálculo, envio)
 ├── Piscina-de-bolinhas.jpg
 ├── 38bf36f0-...jpeg    # foto do Pula-Pula
 └── ad9d1d1a-...jpg     # foto do Combo
@@ -53,9 +54,10 @@ Cada reserva salva um registro por brinquedo escolhido:
 
 ## Personalização
 
-- **Brinquedos e preços**: edite os cards na seção `.vitrine` e o atributo `data-preco` de cada checkbox.
-- **Regiões e frete**: edite as `<option>` do `<select id="bairro">` e o atributo `data-frete`.
-- **Número de WhatsApp de destino**: altere o número em `window.open(\`https://wa.me/55...\`)` dentro da função `salvarEEnviar()`.
+- **Brinquedos e preços**: edite os cards na seção `.vitrine` (em `index.html`) e o atributo `data-preco` de cada checkbox.
+- **Regiões e frete**: edite as `<option>` do `<select id="bairro">` (em `index.html`) e o atributo `data-frete`.
+- **Número de WhatsApp de destino**: altere o número em `window.open(\`https://wa.me/55...\`)` dentro da função `salvarEEnviar()` (em `script.js`).
+- **Cores e estilo**: todo o CSS está em `style.css`.
 
 ## Projeto relacionado
 
